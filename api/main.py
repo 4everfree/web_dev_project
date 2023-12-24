@@ -21,6 +21,7 @@ CORS(app)
 
 app.config["DEBUG"] = DEBUG
 
+
 @app.route('/new-image')
 def new_image():
     word = request.args.get("query")
@@ -32,7 +33,8 @@ def new_image():
     data = response.json()
     return data
 
-@app.route('/images', methods=['GET','POST'])
+
+@app.route('/images', methods=['GET', 'POST'])
 def images():
     if request.method == 'GET':
         images = images_collection.find({})
