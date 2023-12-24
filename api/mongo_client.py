@@ -9,7 +9,7 @@ MONGO_USERNAME = os.environ.get('MONGO_USERNAME', 'root')
 MONGO_PASSWORD = os.environ.get('MONGO_PASSWORD', '')
 MONGO_PORT = os.environ.get('MONGO_PORT', 27017)
 
-
+"""mongo client constructor"""
 mongo_client = MongoClient(
     host=MONGO_URL,
     username=MONGO_USERNAME,
