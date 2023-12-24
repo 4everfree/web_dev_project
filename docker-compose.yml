@@ -25,7 +25,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: strong-db-password
-
+    volumes:
+      - mongodb_data:/data/db
   mongo-express:
     image: mongo-express
     restart: always
@@ -37,3 +38,6 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: strong-db-password
     depends_on:
       - mongo
+
+volumes:
+  mongodb_data:
