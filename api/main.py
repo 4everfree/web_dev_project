@@ -41,8 +41,11 @@ def images():
         return jsonify([img for img in images])
     if request.method == 'POST':
         image = request.get_json()
-        return images_collection.insert_one(image)
+        image['_id'] = image.get("id")
+        result = images_collection.insert_one(image)
+        inserted_id = result.inserted_id
+        return {"inserted_id": inserted_id}
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5050)
+    app.run(host='0.0.0.0', port=5051)
