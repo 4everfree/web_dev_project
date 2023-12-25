@@ -17,7 +17,6 @@ const App = () => {
         try {
             const res = await axios.get(`${API_URL}/new-image?query=${word}`);
             setImages([{...res.data, title: word}, ...images]);
-            console.log(res.data)
         } catch (error) {
             console.log(error)
         }
