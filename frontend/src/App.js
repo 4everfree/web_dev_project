@@ -13,16 +13,16 @@ const App = () => {
     const [word, setWord] = useState('');
     const [images, setImages] = useState([]);
 
-    const getSavedImages = async () => {
-        try {
-            const res = await axios.get(`${API_URL}/images`);
-            setImages(res.data || []);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    ;
 
-    useEffect(()=> getSavedImages(), []);
+    useEffect(()=> {
+            async function getSavedImages() {
+                const res = await axios.get(`${API_URL}/images`);
+                setImages(res.data || []);
+            }
+            getSavedImages();
+        }
+        , []);
 
     const handeSearchSubmit = async (e) => {
         e.preventDefault();
