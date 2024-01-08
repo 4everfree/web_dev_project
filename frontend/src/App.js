@@ -1,5 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {useState, useEffect} from 'react';
 import Header from './components/Header';
 import Search from "./components/Search";
@@ -17,17 +19,19 @@ const App = () => {
 
     ;
 
-    useEffect(()=> {
+    useEffect(() => {
             async function getSavedImages() {
                 const res = await axios.get(`${API_URL}/images`);
                 setImages(res.data || []);
                 setLoading(false);
+                toast('Saved images downloaded');
             }
+
             getSavedImages();
         }
         , []);
 
-    const handeSearchSubmit = async (e) => {
+    const handleSearchSubmit = async (e) => {
         e.preventDefault();
         try {
             const res = await axios.get(`${API_URL}/new-image?query=${word}`);
@@ -44,7 +48,7 @@ const App = () => {
             const res = await axios.delete(`${API_URL}/images/${id}`);
             if (res.data?.deleted_id) {
                 setImages(images.filter((image) => image.id !== id));
-            }    
+            }
         } catch (error) {
             console.log(error)
         }
@@ -52,13 +56,13 @@ const App = () => {
 
     const handleSaveImage = async (id) => {
         const imageToBeSaved = images.find((image) => image.id === id);
-        imageToBeSaved.saved = true; 
-        
+        imageToBeSaved.saved = true;
+
         try {
             const res = await axios.post(`${API_URL}/images`, imageToBeSaved);
-            if ( res.data?.inserted_id) {
+            if (res.data?.inserted_id) {
                 setImages(images.map((image) => image.id === id ? {...image, saved: true} : image));
-            } 
+            }
             console.log(res.data);
         } catch (error) {
             console.log(error);
@@ -69,23 +73,25 @@ const App = () => {
         <div className="App">
             <Header title={"Images gallery"}/>
             {
-            loading ? (<Spinner />) : 
-            (<>
-            <Search word={word} setWord={setWord} handeSubmit={handeSearchSubmit}/>
-            <Container className="mt-4">
-                <Row xs={1} md={2} lg={3}>
-                    {images.map((image, i) => (
-                        <Col key={i} className="pb-3">
-                            <ImageCard 
-                                saveImage={handleSaveImage} 
-                                deleteImage={handleDeleteImage} 
-                                image={image}/>
-                        </Col>
-                    ))}
-                </Row>
-            </Container>
-            </>) 
+                loading ? (<Spinner/>) :
+                    (<>
+                            <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit}/>
+                            <Container className="mt-4">
+                                <Row xs={1} md={2} lg={3}>
+                                    {images.map((image, i) => (
+                                        <Col key={i} className="pb-3">
+                                            <ImageCard
+                                                saveImage={handleSaveImage}
+                                                deleteImage={handleDeleteImage}
+                                                image={image}/>
+                                        </Col>
+                                    ))}
+                                </Row>
+                            </Container>
+                        </>
+                    )
             }
+            <ToastContainer position="bottom-right"/>
         </div>
     );
 }
