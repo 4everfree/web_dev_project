@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card} from "react-bootstrap";
+import {Button, Card, Nav} from "react-bootstrap";
 
 const ImageCard = ({ image, deleteImage, saveImage }) => {
     const authorName = image.user?.name || "No author name";
